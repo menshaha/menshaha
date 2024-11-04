@@ -13,6 +13,65 @@ if _G.tpOn == nil or _G.SellOn == nil then
     _G.SellOn = false
 end
 
+makefolder("YbaModded")
+
+local DefaultFiles = {
+
+	['YbaModded\\Settings_' .. player.Name] = {
+
+		['AutoTp'] = false;
+		['AutoSell'] = false;
+
+	};
+
+
+
+
+}
+
+function deepcopy(orig)
+	local orig_type = type(orig)
+	local copy
+	if orig_type == 'table' then
+		copy = {}
+		for orig_key, orig_value in next, orig, nil do
+			copy[deepcopy(orig_key)] = deepcopy(orig_value)
+		end
+		setmetatable(copy, deepcopy(getmetatable(orig)))
+	else -- number, string, boolean, etc
+		copy = orig
+	end
+	return copy
+end
+
+for name, value in pairs(DefaultFiles) do -- SET DEFAULT VALUES
+	if not pcall(function() readfile(name) end) then writefile(name, HttpService:JSONEncode(value)) end 
+end
+
+local Settings = HttpService:JSONDecode(readfile('YbaModded\\Settings_' .. player.Name)) 
+
+local function Save (valueName, newValue)
+	Settings[valueName] = newValue
+	writefile('YbaModded\\Settings_' .. player.Name, HttpService:JSONEncode(Settings))
+end
+
+local function GetSave (valueName)
+	local value = Settings[valueName]
+	if value == nil then
+		if DefaultFiles['YbaModded\\Settings_' .. player.Name][valueName] ~= nil then
+			Save(valueName, DefaultFiles['YbaModded\\Settings_' .. player.Name][valueName])
+		else
+			Save(valueName, false)
+		end
+
+		value = Settings[valueName]
+	end
+
+	if type(value) == 'table' then value = deepcopy(value) end
+
+	return value
+end
+
 local ScreenGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local Bottomtext = Instance.new("TextLabel")
@@ -124,6 +183,21 @@ Title.TextWrapped = true
 
 UICorner_6.CornerRadius = UDim.new(0.150000006, 0)
 UICorner_6.Parent = Title
+
+local function loadSettings()
+    if GetSave('AutoTp') then
+        tpToItems.Text = 'TP to items: on'
+    else
+        tpToItems.Text = 'TP to items: off'
+    end
+    if GetSave('AutoSell') then
+        toggleSelling.Text = 'Toggle selling: on'
+    else
+        toggleSelling.Text = 'Toggle selling: off'
+    end
+end
+
+loadSettings()
 
 -- Scripts:
 
@@ -245,8 +319,9 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 	local sellingButton = script.Parent.Frame.toggleSelling
 	sellingButton.MouseButton1Click:Connect(function()
-		_G.SellOn = not _G.SellOn
-		if _G.SellOn then
+		local sellItems = not GetSave('AutoSell')
+        Save('AutoSell', sellItems)
+		if sellItems then
 			sellingButton.Text = "Toggle selling: on"
 		else
 			sellingButton.Text = "Toggle selling: off"
@@ -256,14 +331,17 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 	local tpButton = script.Parent.Frame.tpToItems
 	tpButton.MouseButton1Click:Connect(function()
-		_G.tpOn = not tpOn
-		if _G.tpOn then
+		local tpOn = not GetSave('AutoSell')
+        
+        Save('AutoTp', tpOn)
+
+		if tpOn then
 			tpButton.Text = "Tp to items: on"
 			coroutine.wrap(mainTP)()
 		else
 			tpButton.Text = "Tp to items: off"
 		end
-		createNotify("TP to items is now " .. tostring(_G.tpOn), 5)
+		createNotify("TP to items is now " .. tostring(tpOn), 5)
 	end)
 end
 coroutine.wrap(QLMOT_fake_script)()
