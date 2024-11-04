@@ -143,7 +143,7 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 	function mainTP() -- Finds the item
         print('Current Items Amount On Map: ' .. #game.Workspace.Item_Spawns.Items:GetChildren())
-		while _G.tpOn or #game.Workspace.Item_Spawns.Items:GetChildren() > 0 do
+		while _G.tpOn and #game.Workspace.Item_Spawns.Items:GetChildren() > 0 do
 			maxItems() -- Checks if I have max items before starting
 			for _, v in pairs(game.Workspace.Item_Spawns.Items:GetChildren()) do
 				local item = v:FindFirstChild("MeshPart")
