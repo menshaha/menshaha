@@ -37,7 +37,7 @@ Frame.BackgroundTransparency = 0.300
 Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Frame.BorderSizePixel = 0
 Frame.Position = UDim2.new(0.01, 0, 0.16, 0)
-Frame.Size = UDim2.new(0, 245, 0, 209)
+Frame.Size = UDim2.new(0, 245, 0, 400)
 
 Bottomtext.Name = "Bottom text"
 Bottomtext.Parent = Frame
