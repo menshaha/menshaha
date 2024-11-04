@@ -8,6 +8,11 @@ local function createNotify(text, timee)
 	notify.New(text, timee)
 end
 
+if _G.tpOn == nil or _G.SellOn == nil then
+    _G.tpOn = false
+    _G.SellOn = false
+end
+
 local ScreenGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local Bottomtext = Instance.new("TextLabel")
@@ -135,18 +140,16 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 		plr.CFrame = plr.CFrame + vector / num_tp
 	end
-
-	local tpOn = false
-	local sell = false
 	
 	function mainTP() -- Finds the item
-		while tpOn and #game.Workspace.Item_Spawns.Items:GetChildren() > 0 do
+        print('Current Items Amount On Map: ' .. #game.Workspace.Item_Spawns.Items:GetChildren())
+		while _G.tpOn or #game.Workspace.Item_Spawns.Items:GetChildren() > 0 do
 			maxItems() -- Checks if I have max items before starting
 			for _, v in pairs(game.Workspace.Item_Spawns.Items:GetChildren()) do
 				local item = v:FindFirstChild("MeshPart")
 				if item and item:FindFirstChild("PointLight") then -- Checks if there actually is an item in this location
 					local proxPrompt = v.ProximityPrompt
-					while item:IsDescendantOf(game.Workspace) and tpOn do
+					while item:IsDescendantOf(game.Workspace) and _G.tpOn do
 						local plr = game.Players.LocalPlayer.Character.HumanoidRootPart
 						travelTo(item)
 						if (item.Position - plr.Position).Magnitude < 5 then
@@ -215,7 +218,7 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 		for _, item in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 			if items[item.Name] then
 				items[item.Name] = items[item.Name] + 1
-				if (items[item.Name] >= (maxLimits[item.Name] or 25)) and sell then
+				if (items[item.Name] >= (maxLimits[item.Name] or 25)) and _G.SellOn then
 					sellItem(item)
                     createNotify('Item sold ' .. item.Name, 5)
 				end
@@ -242,8 +245,8 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 	local sellingButton = script.Parent.Frame.toggleSelling
 	sellingButton.MouseButton1Click:Connect(function()
-		sell = not sell
-		if sell then
+		_G.SellOn = not _G.SellOn
+		if _G.SellOn then
 			sellingButton.Text = "Toggle selling: on"
 		else
 			sellingButton.Text = "Toggle selling: off"
@@ -253,14 +256,14 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 	local tpButton = script.Parent.Frame.tpToItems
 	tpButton.MouseButton1Click:Connect(function()
-		tpOn = not tpOn
-		if tpOn then
+		_G.tpOn = not tpOn
+		if _G.tpOn then
 			tpButton.Text = "Tp to items: on"
 			coroutine.wrap(mainTP)()
 		else
 			tpButton.Text = "Tp to items: off"
 		end
-		print("TP to items is now " .. tostring(tpOn))
+		createNotify("TP to items is now " .. tostring(_G.tpOn), 5)
 	end)
 end
 coroutine.wrap(QLMOT_fake_script)()
