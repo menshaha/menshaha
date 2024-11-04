@@ -2,6 +2,8 @@
 
 -- Instances:
 
+local player = game.Players.LocalPlayer
+
 local notify = loadstring(game:HttpGet("https://raw.githubusercontent.com/menshaha/Main/main/Notify"))()
 
 local function createNotify(text, timee)
