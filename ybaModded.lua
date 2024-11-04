@@ -222,13 +222,13 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 	function mainTP() -- Finds the item
         print('Current Items Amount On Map: ' .. #game.Workspace.Item_Spawns.Items:GetChildren())
-		while _G.tpOn and #game.Workspace.Item_Spawns.Items:GetChildren() > 0 do
+		while GetSave('AutoTp') and #game.Workspace.Item_Spawns.Items:GetChildren() > 0 do
 			maxItems() -- Checks if I have max items before starting
 			for _, v in pairs(game.Workspace.Item_Spawns.Items:GetChildren()) do
 				local item = v:FindFirstChild("MeshPart")
 				if item and item:FindFirstChild("PointLight") then -- Checks if there actually is an item in this location
 					local proxPrompt = v.ProximityPrompt
-					while item:IsDescendantOf(game.Workspace) and _G.tpOn do
+					while item:IsDescendantOf(game.Workspace) and GetSave('AutoTp') do
 						local plr = game.Players.LocalPlayer.Character.HumanoidRootPart
 						travelTo(item)
 						if (item.Position - plr.Position).Magnitude < 5 then
@@ -297,7 +297,7 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 		for _, item in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 			if items[item.Name] then
 				items[item.Name] = items[item.Name] + 1
-				if (items[item.Name] >= (maxLimits[item.Name] or 25)) and _G.SellOn then
+				if (items[item.Name] >= (maxLimits[item.Name] or 25)) and GetSave('AutoSell') then
 					sellItem(item)
                     createNotify('Item sold ' .. item.Name, 5)
 				end
@@ -336,7 +336,7 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 	
 	local tpButton = script.Parent.Frame.tpToItems
 	tpButton.MouseButton1Click:Connect(function()
-		local tpOn = not GetSave('AutoSell')
+		local tpOn = not GetSave('AutoTp')
         
         Save('AutoTp', tpOn)
 
