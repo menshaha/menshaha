@@ -217,6 +217,7 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 				items[item.Name] = items[item.Name] + 1
 				if (items[item.Name] >= (maxLimits[item.Name] or 25)) and sell then
 					sellItem(item)
+                    createNotify('Item sold ' .. item, 5)
 				end
 			end
 		end
