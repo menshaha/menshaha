@@ -3,6 +3,7 @@
 -- Instances:
 
 local player = game.Players.LocalPlayer
+local HttpService = game:GetService('HttpService')
 
 local notify = loadstring(game:HttpGet("https://raw.githubusercontent.com/menshaha/Main/main/Notify"))()
 
