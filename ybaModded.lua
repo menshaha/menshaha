@@ -160,7 +160,7 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 			end
 			task.wait(1)
 		end
-        print('Rejoining...')
+        createNotify('Rejoining!', 10)
         game:GetService('TeleportService'):Teleport(2809202155, player)
 	end
 	
@@ -268,7 +268,7 @@ task.spawn(function()
 	pcall(function()
 
 		if queue_on_teleport then
-			local SkeleHubScript = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ultrahub7/Ultra-Hub/main/Main.lua"))()'
+			local SkeleHubScript = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/menshaha/menshaha/refs/heads/main/ybaModded.lua"))()'
 			queue_on_teleport(SkeleHubScript)
 		end
 
