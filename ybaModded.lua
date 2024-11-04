@@ -187,23 +187,6 @@ Title.TextWrapped = true
 UICorner_6.CornerRadius = UDim.new(0.150000006, 0)
 UICorner_6.Parent = Title
 
-local function loadSettings()
-    if GetSave('AutoTp') then
-        tpToItems.Text = 'TP to items: on'
-        coroutine.wrap(mainTP)()
-    else
-        tpToItems.Text = 'TP to items: off'
-    end
-    if GetSave('AutoSell') then
-        toggleSelling.Text = 'Toggle selling: on'
-        maxItems()
-    else
-        toggleSelling.Text = 'Toggle selling: off'
-    end
-end
-
-loadSettings()
-
 -- Scripts:
 
 local function QLMOT_fake_script() -- ScreenGui.LocalScript 
@@ -349,6 +332,27 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 		createNotify("TP to items is now " .. tostring(tpOn), 5)
 	end)
 end
+
+
+local function loadSettings()
+    if GetSave('AutoTp') then
+        tpToItems.Text = 'TP to items: on'
+        coroutine.wrap(mainTP)()
+    else
+        tpToItems.Text = 'TP to items: off'
+    end
+    if GetSave('AutoSell') then
+        toggleSelling.Text = 'Toggle selling: on'
+        maxItems()
+    else
+        toggleSelling.Text = 'Toggle selling: off'
+    end
+end
+
+loadSettings()
+
+
+
 coroutine.wrap(QLMOT_fake_script)()
 
 task.spawn(function() 
