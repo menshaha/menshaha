@@ -190,11 +190,13 @@ UICorner_6.Parent = Title
 local function loadSettings()
     if GetSave('AutoTp') then
         tpToItems.Text = 'TP to items: on'
+        coroutine.wrap(mainTP)()
     else
         tpToItems.Text = 'TP to items: off'
     end
     if GetSave('AutoSell') then
         toggleSelling.Text = 'Toggle selling: on'
+        maxItems()
     else
         toggleSelling.Text = 'Toggle selling: off'
     end
