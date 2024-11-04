@@ -287,6 +287,23 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 			end
 		end
 	end
+
+    local function loadSettings()
+        if GetSave('AutoTp') then
+            tpToItems.Text = 'TP to items: on'
+            coroutine.wrap(mainTP)()
+        else
+            tpToItems.Text = 'TP to items: off'
+        end
+        if GetSave('AutoSell') then
+            toggleSelling.Text = 'Toggle selling: on'
+            maxItems()
+        else
+            toggleSelling.Text = 'Toggle selling: off'
+        end
+    end
+    
+    loadSettings()
 	
 	function sellItem(item)
 		local plrName = game.Players.LocalPlayer.Name
@@ -332,26 +349,6 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 		createNotify("TP to items is now " .. tostring(tpOn), 5)
 	end)
 end
-
-
-local function loadSettings()
-    if GetSave('AutoTp') then
-        tpToItems.Text = 'TP to items: on'
-        coroutine.wrap(mainTP)()
-    else
-        tpToItems.Text = 'TP to items: off'
-    end
-    if GetSave('AutoSell') then
-        toggleSelling.Text = 'Toggle selling: on'
-        maxItems()
-    else
-        toggleSelling.Text = 'Toggle selling: off'
-    end
-end
-
-loadSettings()
-
-
 
 coroutine.wrap(QLMOT_fake_script)()
 
