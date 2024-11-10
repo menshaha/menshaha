@@ -250,7 +250,7 @@ function AutoFarmItems()
         while GetSave('AutoTp') do
             if #game.Workspace.Item_Spawns.Items:GetChildren() <= 0 then
                 if GetSave('ServerHopItems') then
-                    serverHop()
+                    coroutine.wrap(serverHop)()
                 end
             end
             maxItems()
