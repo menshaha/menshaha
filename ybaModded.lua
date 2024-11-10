@@ -20,7 +20,7 @@ local _servers = robloxAPI.._place.."/servers/Public?sortOrder=Asc&limit=10"
 
 function ListServers(cursor)
    local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-   return Http:JSONDecode(Raw)
+   return HttpService:JSONDecode(Raw)
 end
 
 makefolder("YbaModded")
