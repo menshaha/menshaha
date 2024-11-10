@@ -2,23 +2,25 @@
 
 -- Instances:
 
+local HttpService = game:GetService('HttpService')
+local TeleportService = game:GetService('TeleportService')
+
 local player = game.Players.LocalPlayer
 
-repeat
-    task.wait(1)
-until player.Character
-
-local HttpService = game:GetService('HttpService')
+repeat task.wait(1) until player.Character
 
 local notify = loadstring(game:HttpGet("https://raw.githubusercontent.com/menshaha/Main/main/Notify"))()
-
 local function createNotify(text, timee)
 	notify.New(text, timee)
 end
 
-if _G.tpOn == nil or _G.SellOn == nil then
-    _G.tpOn = false
-    _G.SellOn = false
+local robloxAPI = "https://games.roblox.com/v1/games/"
+local _place,_id = game.PlaceId, game.JobId
+local _servers = robloxAPI.._place.."/servers/Public?sortOrder=Asc&limit=10"
+
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
 end
 
 makefolder("YbaModded")
@@ -194,6 +196,12 @@ UICorner_6.Parent = Title
 
 -- Scripts:
 
+local function serverHop()
+	local Servers = ListServers()
+	local Server = Servers.data[math.random(1,#Servers.data)]
+	TeleportService:TeleportToPlaceInstance(_place, Server.id, Player)
+end
+
 local function QLMOT_fake_script() -- ScreenGui.LocalScript 
 	local script = Instance.new('LocalScript', ScreenGui)
 
@@ -231,7 +239,8 @@ local function QLMOT_fake_script() -- ScreenGui.LocalScript
 			task.wait(1)
 		end
         createNotify('Rejoining!', 10)
-        game:GetService('TeleportService'):Teleport(2809202155, player)
+		serverHop()
+        --game:GetService('TeleportService'):Teleport(2809202155, player)
 	end
 	
 	function maxItems()
