@@ -13,15 +13,7 @@ local notify = loadstring(game:HttpGet("https://raw.githubusercontent.com/mensha
 local function createNotify(text, timee)
 	notify.New(text, timee)
 end
-
-local robloxAPI = "https://games.roblox.com/v1/games/"
-local _place,_id = game.PlaceId, game.JobId
-local _servers = robloxAPI.._place.."/servers/Public?sortOrder=Asc&limit=10"
-
-function ListServers(cursor)
-   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-   return HttpService:JSONDecode(Raw)
-end
+local serverHopModule = loadstring(game:HttpGet"https://raw.githubusercontent.com/LeoKholYt/roblox/main/lk_serverhop.lua")()
 
 makefolder("YbaModded")
 
@@ -197,9 +189,7 @@ UICorner_6.Parent = Title
 -- Scripts:
 
 local function serverHop()
-	local Servers = ListServers()
-	local Server = Servers.data[math.random(1,#Servers.data)]
-	TeleportService:TeleportToPlaceInstance(_place, Server.id, Player)
+	serverHopModule:Teleport(game.PlaceId)
 end
 
 local function QLMOT_fake_script() -- ScreenGui.LocalScript 
